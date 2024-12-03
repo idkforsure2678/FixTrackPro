@@ -20,6 +20,8 @@ public class FixTrackProGUI extends JFrame implements ActionListener{
     Font textFont = new Font("SansSerif", Font.BOLD, 20);
 
     JLayeredPane bodyFrame = new JLayeredPane();
+    
+    JPanel body = new JPanel();
 
     JPanel menuFrame = new JPanel();
 
@@ -35,6 +37,13 @@ public class FixTrackProGUI extends JFrame implements ActionListener{
     JPanel buttonChoice = new JPanel();
     JButton repair = new JButton("REPAIR");
     JButton maintenance = new JButton("MAINTENANCE");
+    
+    JPanel appliancePanel = new JPanel();
+    JPanel applianceFrame = new JPanel();
+    JButton phone = new JButton();
+    JButton computer = new JButton();
+    JButton laptop = new JButton();
+    JButton tv = new JButton();
 
     FixTrackProGUI() {        
         SwingUtilities.invokeLater(() -> {
@@ -63,6 +72,8 @@ public class FixTrackProGUI extends JFrame implements ActionListener{
 
             //Body
             bodyFrame.setBounds(0,0 , 700,0);
+            
+            body.setBounds(0,0, 700, 350);
 
             menuFrame.setBounds(400, 0, 300, 350);
             menuFrame.setBackground(Color.pink);
@@ -74,6 +85,7 @@ public class FixTrackProGUI extends JFrame implements ActionListener{
             home.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
             home.setBackground(Color.PINK);
             home.setFocusPainted(false);
+            home.addActionListener(this);
             menuFrame.add(home);
 
             notification.setFont(subHeaderFont);
@@ -95,6 +107,7 @@ public class FixTrackProGUI extends JFrame implements ActionListener{
             menuFrame.add(logOut);
 
             dashboard();
+            bodyFrame.add(body, JLayeredPane.DEFAULT_LAYER);
             bodyFrame.add(menuFrame, JLayeredPane.PALETTE_LAYER);
 
             add(bodyFrame, BorderLayout.CENTER);
@@ -138,26 +151,46 @@ public class FixTrackProGUI extends JFrame implements ActionListener{
 
         dashboard.add(buttonChoice);
 
-        bodyFrame.add(dashboard, JLayeredPane.DEFAULT_LAYER);
+        body.add(dashboard, JLayeredPane.DEFAULT_LAYER);
     }
 
     public void applianceMenu() {
+        appliancePanel.setBounds(0, 0, WIDTH, 350);
+       
+        applianceFrame.setBounds(0, 0, 650, 350);
+        applianceFrame.setLayout(new GridLayout(2, 2, 10, 10));
         
+        
+        applianceFrame.add(phone);
+        applianceFrame.add(computer);
+        applianceFrame.add(laptop);
+        applianceFrame.add(tv);
+        
+        appliancePanel.add(applianceFrame);
+        body.add(appliancePanel, JLayeredPane.DEFAULT_LAYER);
     }
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == menu){
             menuFrame.setVisible(!menuFrame.isVisible());
         }
+        
+        if(e.getSource() == home) {
+            body.removeAll();
+            dashboard();
+            body.revalidate();
+            body.repaint();
+        }
         if(e.getSource() == maintenance) {
-            bodyFrame.remove(dashboard); 
-            
-            bodyFrame.revalidate();
-            bodyFrame.repaint();
+            body.removeAll(); 
+            applianceMenu();
+            body.revalidate();
+            body.repaint();
         }
 
         if(e.getSource() == repair) {
-            bodyFrame.remove(dashboard); 
+            bodyFrame.removeAll();
+            applianceMenu(); 
             bodyFrame.revalidate();
             bodyFrame.repaint();
         }
